@@ -44,6 +44,12 @@ namespace LogsMonitoring.Web.Controllers
 
         public ActionResult Employees()
         {
+            // Odczytaj logi z pliku tekstowego
+            string logFilePath = @"D:\LogsMonitoring\LogsMonitoring.Web\LogsMonitoring.Web\App_data\EmployeeLog.txt";
+            string[] logs = System.IO.File.ReadAllLines(logFilePath);
+
+            // Przekazanie logów do widoku
+            ViewBag.EmployeeLogs = logs;
             return View();
         }
 

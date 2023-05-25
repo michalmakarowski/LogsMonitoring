@@ -1,7 +1,19 @@
 ﻿@{
-    ViewBag.Title = "Employees";
+    string[] logs = ViewBag.EmployeeLogs;
 }
 
-<h2>Employees</h2>
+<h1>Employee Logs</h1>
 
-<!-- Tutaj możesz umieścić kod HTML dotyczący strony "Employees" -->
+@if (logs != null && logs.Length > 0)
+{
+    <ul>
+        @foreach (var log in logs)
+        {
+            <li>@log</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No logs available.</p>
+}

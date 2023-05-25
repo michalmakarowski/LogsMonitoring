@@ -1,0 +1,84 @@
+CREATE TRIGGER EmployeeCreateTrigger
+ON Employees
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @LogMessage NVARCHAR(MAX);
+    SET @LogMessage = 'Operacja Create na tabeli Employees. Nowy rekord dodany: ' + CAST((SELECT TOP 1 EmployeeID FROM inserted) AS NVARCHAR(MAX));
+
+    -- Zapisz log do pliku tekstowego
+    DECLARE @LogFilePath NVARCHAR(MAX);
+    SET @LogFilePath = 'D:\LogsMonitoring\LogsMonitoring.Web\LogsMonitoring.Web\App_Data\EmployeeLog.txt';
+
+    DECLARE @Sql NVARCHAR(MAX);
+    SET @Sql = 'EXEC xp_cmdshell ''echo ' + @LogMessage + ' >> "' + @LogFilePath + '";''';
+
+    EXEC sp_executesql @Sql;
+END
+//test
+INSERT INTO [Test].[dbo].[Employees] (
+    [LastName],
+    [FirstName]
+)
+VALUES (
+    'test123',
+    'John'
+);
+
+CREATE TRIGGER EmployeeUpdateTrigger
+ON Employees
+AFTER UPDATE
+AS
+BEGIN
+    DECLARE @LogMessage NVARCHAR(MAX);
+    SET @LogMessage = 'Operacja Update na tabeli Employees. Nowy rekord zmodyfikowany: ' + CAST((SELECT TOP 1 EmployeeID FROM inserted) AS NVARCHAR(MAX));
+
+    -- Zapisz log do pliku tekstowego
+    DECLARE @LogFilePath NVARCHAR(MAX);
+    SET @LogFilePath = 'D:\LogsMonitoring\LogsMonitoring.Web\LogsMonitoring.Web\App_Data\EmployeeLog.txt';
+
+    DECLARE @Sql NVARCHAR(MAX);
+    SET @Sql = 'EXEC xp_cmdshell ''echo ' + @LogMessage + ' >> "' + @LogFilePath + '";''';
+
+    EXEC sp_executesql @Sql;
+END
+//test
+UPDATE [Test].[dbo].[Employees]
+SET [LastName] = 'Newl',
+    [FirstName] = 'NewF'
+WHERE [EmployeeID] = 14;
+
+
+CREATE TRIGGER EmployeeDeleteTrigger
+ON Employees
+AFTER DELETE
+AS
+BEGIN
+    DECLARE @LogMessage NVARCHAR(MAX);
+    SET @LogMessage = 'Operacja Delete na tabeli Employees. Zostal usuniety: ' + CAST((SELECT TOP 1 EmployeeID FROM deleted) AS NVARCHAR(MAX));
+
+    -- Zapisz log do pliku tekstowego
+    DECLARE @LogFilePath NVARCHAR(MAX);
+    SET @LogFilePath = 'D:\LogsMonitoring\LogsMonitoring.Web\LogsMonitoring.Web\App_Data\EmployeeLog.txt';
+
+    DECLARE @Sql NVARCHAR(MAX);
+    SET @Sql = 'EXEC xp_cmdshell ''echo ' + @LogMessage + ' >> "' + @LogFilePath + '";''';
+
+    EXEC sp_executesql @Sql;
+END
+//test
+DELETE FROM [Test].[dbo].[Employees]
+WHERE [EmployeeID] = 17;
+
+
+
+
+
+/potrzebne
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+EXEC sp_configure 'xp_cmdshell', 1;
+RECONFIGURE;
+
+SELECT * FROM sys.triggers
+

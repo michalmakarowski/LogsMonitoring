@@ -1,0 +1,6 @@
+﻿
+Operacja Create na tabeli Employees. Nowy rekord dodany: 18 ;
+Operacja Create na tabeli Employees. Nowy rekord dodany: 19 ;
+Operacja Create na tabeli Employees. Nowy rekord dodany: 20 ;
+Operacja Update na tabeli Employees. Nowy rekord zmodyfikowany: 14 ;
+Operacja Delete na tabeli Employees. Zostal usuniety: 14 ;
