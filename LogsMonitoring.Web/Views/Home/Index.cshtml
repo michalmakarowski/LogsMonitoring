@@ -1,0 +1,17 @@
+﻿@model List<RouteValueDictionary>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Strona główna</title>
+</head>
+<body>
+    <h1>Lista tabel</h1>
+    <ul>
+        @foreach (var tableData in Model)
+        {
+            <li>@Html.ActionLink(tableData["TableName"].ToString(), tableData["TableName"].ToString(), "Home")</li>
+        }
+    </ul>
+</body>
+</html>
