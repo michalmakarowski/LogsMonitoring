@@ -4,7 +4,7 @@ DECLARE @sql NVARCHAR(MAX)
 -- Create a cursor to iterate over the list of tables
 DECLARE tableCursor CURSOR FOR
 SELECT name
-FROM sys.tables
+FROM sys.tables WHERE name NOT IN ('SchemaVersions', 'AuditLogs');
 
 -- Open the cursor
 OPEN tableCursor
@@ -15,12 +15,12 @@ FETCH NEXT FROM tableCursor INTO @tableName
 -- Loop through each table and create a trigger
 WHILE @@FETCH_STATUS = 0
 BEGIN
-    SET @sql = N'CREATE TRIGGER trg_' + @tableName + '
+    SET @sql = N'CREATE TRIGGER AuditTrigger_' + @tableName + '
                  ON ' + @tableName + '
     AFTER INSERT, UPDATE, DELETE
 AS
 BEGIN
-	EXEC PrintProcedure
+	EXEC AuditInsertProcedure
 END'
 
     -- Execute the dynamically generated CREATE TRIGGER statement

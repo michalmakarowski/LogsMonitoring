@@ -93,3 +93,23 @@ RECONFIGURE;
 SELECT * FROM sys.triggers
 
 DESKTOP-18IL65C\mmaka
+
+
+//
+USE NorthWind
+INSERT INTO [dbo].[Employees] (
+    [LastName],
+    [FirstName]
+)
+VALUES (
+    'test123',
+    'John'
+);
+
+UPDATE [dbo].[Employees]
+SET [LastName] = 'Newl',
+    [FirstName] = 'NewF'
+WHERE LastName = 'test123';
+
+DELETE FROM [dbo].[Employees]
+WHERE LastName = 'Newl';

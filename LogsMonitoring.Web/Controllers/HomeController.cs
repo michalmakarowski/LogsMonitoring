@@ -22,7 +22,7 @@ namespace LogsMonitoring.Web.Controllers
         {
             List<RouteValueDictionary> list = new List<RouteValueDictionary>();
 
-            string conString = "Server=DESKTOP-18IL65C\\SQLEXPRESS;Database=Test;Trusted_Connection=True;TrustServerCertificate=True;";
+            string conString = "Server=DESKTOP-18IL65C\\SQLEXPRESS;Database=NorthWind;Trusted_Connection=True;TrustServerCertificate=True;";
 
             using (SqlConnection con = new SqlConnection(conString))
             {
@@ -64,7 +64,7 @@ namespace LogsMonitoring.Web.Controllers
             {
                 // Ustawienia serwera SMTP
                 string smtpHost = "smtp.gmail.com";
-                int smtpPort = 465;
+                int smtpPort = 587;
                 string smtpUsername = "LogsMonitoringAd@gmail.com";
                 string smtpPassword = "euwnhzcozuaohtlc";
 

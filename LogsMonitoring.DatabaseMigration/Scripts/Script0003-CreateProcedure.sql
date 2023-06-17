@@ -1,4 +1,4 @@
-CREATE PROCEDURE PrintProcedure
+CREATE PROCEDURE [dbo].[AuditInsertProcedure]
 AS
 BEGIN
 	DECLARE @sqlCmd nvarchar(128)
@@ -9,13 +9,15 @@ BEGIN
 
 	INSERT @tmp EXEC('DBCC INPUTBUFFER(@@SPID)')
 
-	SET @sqlCmd = (SELECT EventInfo FROM @tmp)
+	SET @sqlCmd = (SELECT trim(EventInfo) FROM @tmp)
 
 	DECLARE @operation NVARCHAR(128) = 'UNKNOWN'
-	IF (CharIndex('INSERT', @sqlCmd) = 1)
+	IF (CharIndex('INSERT', @sqlCmd) >= 1)
 		SET @operation = 'INSERT'
+	else if (CharIndex('UPDATE', @sqlCmd) >= 1)
+		SET @operation = 'UPDATE'
+	else if (CharIndex('DELETE', @sqlCmd) >= 1)
+		SET @operation = 'DELETE'
 
-	PRINT @sqlCmd
-
-	insert into [dbo].[AuditLogs] (OperationType, date, Message) VALUES (@operation, GETDATE(),@sqlCmd)
+	insert into [dbo].[AuditLogs] (OperationType, date, Message,ExecutingUser) VALUES (@operation, GETDATE(),@sqlCmd, SUSER_NAME())
 END
