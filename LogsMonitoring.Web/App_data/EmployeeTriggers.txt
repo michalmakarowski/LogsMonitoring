@@ -1,10 +1,20 @@
 CREATE TRIGGER EmployeeCreateTrigger
-ON Employees
+ON [Test].[dbo].[Employees]
 AFTER INSERT
 AS
 BEGIN
     DECLARE @LogMessage NVARCHAR(MAX);
-    SET @LogMessage = 'Operacja Create na tabeli Employees. Nowy rekord dodany: ' + CAST((SELECT TOP 1 EmployeeID FROM inserted) AS NVARCHAR(MAX));
+    DECLARE @CurrentDateTime DATETIME;
+    SET @CurrentDateTime = GETDATE();
+
+    -- Pobierz dane z wstawionej instrukcji INSERT
+    DECLARE @LastName NVARCHAR(100);
+    DECLARE @FirstName NVARCHAR(100);
+
+    SELECT @LastName = LastName, @FirstName = FirstName
+    FROM inserted;
+
+    SET @LogMessage = 'Operacja Create na tabeli Employees. Nowy rekord dodany: LastName: ' + @LastName + ', FirstName: ' + @FirstName + ', ' + CONVERT(NVARCHAR(MAX), @CurrentDateTime, 121);
 
     -- Zapisz log do pliku tekstowego
     DECLARE @LogFilePath NVARCHAR(MAX);
@@ -82,3 +92,4 @@ RECONFIGURE;
 
 SELECT * FROM sys.triggers
 
+DESKTOP-18IL65C\mmaka

@@ -1,6 +1,3 @@
-﻿
-Operacja Create na tabeli Employees. Nowy rekord dodany: 18 ;
-Operacja Create na tabeli Employees. Nowy rekord dodany: 19 ;
-Operacja Create na tabeli Employees. Nowy rekord dodany: 20 ;
-Operacja Update na tabeli Employees. Nowy rekord zmodyfikowany: 14 ;
-Operacja Delete na tabeli Employees. Zostal usuniety: 14 ;
+﻿Uzytkownik bez uprawnien probowal wykonac operacje INSERT na tabeli Employees. Data: 2023-06-15 11:14:18.717 
+Uzytkownik bez uprawnien probowal wykonac operacje Delete na tabeli Employees. Data: 2023-06-15 11:14:26.213 
+Uzytkownik bez uprawnien probowal wykonac operacje UPDATE na tabeli Employees. Data: 2023-06-15 11:14:31.203 

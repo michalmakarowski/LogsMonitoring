@@ -1,0 +1,28 @@
+1. dodac czas wykonywania logu + tresc selecta // jest insert
+2. blokowanie pelnych nodyfikacji na tabelach
+4. blokowanie pewnych operacji na tabelach
+5. powiadamianie w logach o probie wykonania modyfikacji na tabeli(ktroa jest zablokowana)
+6. Powiadomienie na mail
+
+Proces:
+1.bazujemy na bazie danych Licencjat tabeli employees +
+2. stworzyc uzytkownika z uprawnieniami publicznymi z mozliwoscia tylko i wylaczenie odczytu tabeli+
+3.zablokowac uzytkownikowi mozliwosc metod create insert delete update
+4. stworzyc trigger ktory podczas proby wykonanie metody powyzej zapisze je w pliku danych 
+5.Powiadomienie email
+
+dodac reguly 
+metoda delete
+
+blokowanie pewnych operacji na pewnych tabelach
+
+blokowanie pelnych tabeli blokada do modyfikacji
+
+powiadamianie w logach o probie wykonania modyfikacji na tabeli(ktroa jest zablokowana)
+
+czas wykonania logu
+
+powiadomienie natychmiastowe na mail? xD
+
+globalny mechanizm audytowania sql server
+
