@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\Script0001-CreateNorthWindDatabase.sql" />
+    <None Remove="Scripts\Script0002-CreateAuditLogs.sql" />
+    <None Remove="Scripts\Script0003-CreateProcedure.sql" />
+    <None Remove="Scripts\Script0004-CreateTrigger.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\Script0001-CreateNorthWindDatabase.sql" />
+    <EmbeddedResource Include="Scripts\Script0002-CreateAuditLogs.sql" />
+    <EmbeddedResource Include="Scripts\Script0003-CreateProcedure.sql" />
+    <EmbeddedResource Include="Scripts\Script0004-CreateTrigger.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup" Version="5.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
