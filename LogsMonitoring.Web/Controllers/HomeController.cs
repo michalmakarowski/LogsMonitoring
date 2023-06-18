@@ -6,11 +6,23 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Net;
+using Dapper.Contrib.Extensions;
+using System.Text;
 
 namespace LogsMonitoring.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private IConfiguration _configuration;
+        private string _conString;
+        private string _fromMail;
+        private List<AuditModel> audits = new List<AuditModel>();
+        public HomeController(IConfiguration configuration) 
+        {
+            _configuration = configuration;
+            _conString = _configuration.GetConnectionString("myNorthWindDB");
+            _fromMail = "LogsMonitoringAd@gmail.com";
+        }
 
         public IActionResult Index()
         {
@@ -22,9 +34,8 @@ namespace LogsMonitoring.Web.Controllers
         {
             List<RouteValueDictionary> list = new List<RouteValueDictionary>();
 
-            string conString = "Server=DESKTOP-18IL65C\\SQLEXPRESS;Database=NorthWind;Trusted_Connection=True;TrustServerCertificate=True;";
 
-            using (SqlConnection con = new SqlConnection(conString))
+            using (SqlConnection con = new SqlConnection(_conString))
             {
                 con.Open();
                 // Get the schema information for the database
@@ -38,7 +49,6 @@ namespace LogsMonitoring.Web.Controllers
                     tableData["TableName"] = tableName;
                     list.Add(tableData);
                 }
-
             }
 
             return list;
@@ -46,10 +56,12 @@ namespace LogsMonitoring.Web.Controllers
 
         public ActionResult Employees()
         {
-            string logFilePath = @"D:\LogsMonitoring\LogsMonitoring.Web\LogsMonitoring.Web\App_data\EmployeeLog.txt";
-            string[] logs = System.IO.File.ReadAllLines(logFilePath);
-
-            ViewBag.EmployeeLogs = logs;
+            
+            using (IDbConnection con = new SqlConnection(_conString))
+            {
+                audits = con.GetAll<AuditModel>().Where(x=>x.Message.Contains("Employees")).ToList();
+                ViewBag.EmployeeLogs = audits;
+            }
             return View();
         }
 
@@ -60,6 +72,21 @@ namespace LogsMonitoring.Web.Controllers
 
         public IActionResult SendEmail(EmailModel emailModel)
         {
+            using (IDbConnection con = new SqlConnection(_conString))
+            {
+                audits = con.GetAll<AuditModel>().ToList();
+            }
+
+            List<AuditModel> listaObiektow = audits;
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var obiekt in listaObiektow)
+            {
+                sb.AppendLine($"{obiekt.Id} - {obiekt.OperationType} - {obiekt.Date} - {obiekt.Message} - {obiekt.ExecutingUser}");
+            }
+
+            string wynik = sb.ToString();
+
             if (ModelState.IsValid)
             {
                 // Ustawienia serwera SMTP
@@ -70,10 +97,10 @@ namespace LogsMonitoring.Web.Controllers
 
                 // Tworzenie wiadomości e-mail
                 MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(emailModel.FromEmail);
+                mailMessage.From = new MailAddress(_fromMail);
                 mailMessage.To.Add(emailModel.ToEmail);
-                mailMessage.Subject = emailModel.Subject;
-                mailMessage.Body = emailModel.Body;
+                mailMessage.Subject = "Employee audit logs";
+                mailMessage.Body = wynik;
 
                 // Konfiguracja klienta SMTP
                 SmtpClient smtpClient = new SmtpClient(smtpHost, smtpPort);

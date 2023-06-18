@@ -113,3 +113,15 @@ WHERE LastName = 'test123';
 
 DELETE FROM [dbo].[Employees]
 WHERE LastName = 'Newl';
+
+//Zalogowany
+EXECUTE AS LOGIN = 'MichalMM';
+INSERT INTO [dbo].[Employees] (
+    [LastName],
+    [FirstName]
+)
+VALUES (
+    'test123',
+    'John'
+);
+
