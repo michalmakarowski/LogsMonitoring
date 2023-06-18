@@ -45,22 +45,25 @@ namespace LogsMonitoring.Web.Controllers
                 foreach (DataRow row in schema.Rows)
                 {
                     string tableName = (string)row["TABLE_NAME"];
-                    RouteValueDictionary tableData = new RouteValueDictionary();
-                    tableData["TableName"] = tableName;
-                    list.Add(tableData);
+                    if (tableName != "AuditLogs" && tableName != "SchemaVersions")
+                    {
+                        RouteValueDictionary tableData = new RouteValueDictionary();
+                        tableData["TableName"] = tableName;
+                        list.Add(tableData);
+                    }
                 }
             }
 
             return list;
         }
 
-        public ActionResult Employees()
+        public ActionResult AuditLogs(string tableName)
         {
-            
             using (IDbConnection con = new SqlConnection(_conString))
             {
-                audits = con.GetAll<AuditModel>().Where(x=>x.Message.Contains("Employees")).ToList();
+                audits = con.GetAll<AuditModel>().Where(x=>x.Message.Contains(tableName)).ToList();
                 ViewBag.EmployeeLogs = audits;
+                ViewBag.TableName = tableName;
             }
             return View();
         }
@@ -74,7 +77,7 @@ namespace LogsMonitoring.Web.Controllers
         {
             using (IDbConnection con = new SqlConnection(_conString))
             {
-                audits = con.GetAll<AuditModel>().ToList();
+                audits = con.GetAll<AuditModel>().Where(x => x.Message.Contains(emailModel.TableName)).ToList();
             }
 
             List<AuditModel> listaObiektow = audits;

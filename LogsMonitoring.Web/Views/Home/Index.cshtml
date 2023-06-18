@@ -10,7 +10,7 @@
     <ul>
         @foreach (var tableData in Model)
         {
-            <li>@Html.ActionLink(tableData["TableName"].ToString(), tableData["TableName"].ToString(), "Home")</li>
+            <li>@Html.ActionLink(tableData["TableName"].ToString(), "AuditLogs", "Home",new {tableName = tableData["TableName"].ToString()} )</li>
         }
     </ul>
 

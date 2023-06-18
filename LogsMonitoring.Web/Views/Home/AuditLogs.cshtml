@@ -1,9 +1,10 @@
 ﻿@{
     List<AuditModel> logs = ViewBag.EmployeeLogs;
+    string name = ViewBag.TableName;
 }
 
-<h1>Employee Logs</h1>
-<a href="@Url.Action("SendEmail", "Home")" class="btn btn-primary">Wyslij zgloszenie</a>
+<h1>@name Logs</h1>
+<a href="@Url.Action("SendEmail", "Home", new {TableName = name})" class="btn btn-primary">Wyslij zgloszenie</a>
 
 @if (logs != null && logs.Count > 0)
 {

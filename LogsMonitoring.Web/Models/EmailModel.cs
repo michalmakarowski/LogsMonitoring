@@ -12,6 +12,8 @@ namespace LogsMonitoring.Web.Models
         [EmailAddress(ErrorMessage = "Nieprawidłowy adres e-mail.")]
         public string ToEmail { get; set; }
 
+        public string TableName { get; set; }
+
         //[Required(ErrorMessage = "Pole Temat jest wymagane.")]
         //public string Subject { get; set; }
 
